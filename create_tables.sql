@@ -7,11 +7,11 @@ goods_id int,
 category_id int,	
 behavior varchar(5),
 timestamp int,
-sex tinyint,
+sex int,
 address varchar(20),
 device varchar(20),
 price decimal(10,2),
-amount tinyint,
+amount int,
 comment varchar(100)
 );
 
@@ -19,9 +19,9 @@ CREATE TABLE customer_shopping_data(
 invoice_no varchar(20),	
 customer_id varchar(20),	
 gender varchar(20),
-age tinyint
+age int,
 category varchar(20),
-quantity tinyint,
+quantity int,
 price decimal(10,2),
 payment_method varchar(20),
 invoice_date varchar(20)
