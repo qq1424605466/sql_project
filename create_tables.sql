@@ -12,7 +12,7 @@ address varchar(20),
 device varchar(20),
 price decimal(10,2),
 amount int,
-comment varchar(100)
+comment text
 );
 
 CREATE TABLE customer_shopping_data(
