@@ -17,7 +17,6 @@ amount INT,
 comment TEXT
 );
 
-
 -- 创建用户购物数据表（用于：RFM分层）
 CREATE TABLE customer_shopping_data(
 invoice_no CHAR(7),	
