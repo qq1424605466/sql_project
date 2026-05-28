@@ -24,8 +24,6 @@ OR price <0
 OR amount <0
 OR timestamp=0;
 
- 2024-05-29 10:40:00 | 2024-06-04 10:39:55
-
 -- 4、格式转换：
 -- 将UNIX时间戳转换为yyyy-mm-dd时间格式：
 ALTER TABLE user_behavior
