@@ -70,8 +70,6 @@ DROP TABLE sales_data;
 --重命名新表
 ALTER TABLE sales_data_dedup RENAME sales_data;
 
-
-InvoiceNo,StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country
 -- 3、处理异常值：401604条-->399656条数据
 DELETE FROM sales_data 
 WHERE InvoiceNo NOT REGEXP '^C?[0-9]{6}$'  
