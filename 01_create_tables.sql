@@ -17,15 +17,14 @@ amount INT,
 comment TEXT
 );
 
--- 创建用户购物数据表（用于：RFM分层）
-CREATE TABLE customer_shopping_data(
-invoice_no CHAR(7),	
-customer_id CHAR(7),	
-gender VARCHAR(7),
-age INT,
-category VARCHAR(20),
-quantity INT,
-price DECIMAL(10,2),
-payment_method VARCHAR(12),
-invoice_date VARCHAR(12)
+-- 创建用户销售数据表（用于：RFM分层）
+CREATE TABLE sales_data(
+InvoiceNo VARCHAR(10),
+StockCode VARCHAR(10),
+Description VARCHAR(50),
+Quantity INT,
+InvoiceDate VARCHAR(30),
+UnitPrice DECIMAL(10,2),
+CustomerID VARCHAR(10),
+Country VARCHAR(30)
 );
