@@ -44,52 +44,61 @@ SELECT MIN(timestamp),MAX(timestamp)
 FROM user_behavior;
 
 
+
 --  ======================================
--- customer_shopping_data 表
+-- sales_data 表：54万-->40万
 
--- 1、查看空值：无
-SELECT COUNT(*) 
-FROM customer_shopping_data 
-WHERE invoice_no IS NULL
-OR customer_id IS NULL 
-OR quantity IS NULL 
-OR price IS NULL
-OR invoice_date IS NULL;
+-- 1、处理空值：数据量从541909条到406829条
+DELETE FROM sales_data 
+WHERE InvoiceNo IS NULL OR InvoiceNo = ''
+OR StockCode IS NULL OR StockCode = ''
+OR Description IS NULL OR Description = ''
+OR Quantity IS NULL 
+OR InvoiceDate IS NULL OR InvoiceDate = ''
+OR UnitPrice IS NULL 
+OR CustomerID IS NULL OR CustomerID = ''
+OR Country IS NULL OR Country = '';
 
--- 2、查看重复值：无
-SELECT *,count(*) 
-FROM customer_shopping_data 
-GROUP BY 1,2,3,4,5,6,7,8,9 
-HAVING COUNT(*)>=2 
-ORDER BY 1,2,3,4,5,6,7,8,9 ;
+-- 2、处理重复值：406829条-->401604条数据
+--创建去重表
+CREATE TABLE sales_data_dedup 
+AS
+SELECT DISTINCT *
+FROM sales_data;
+--删除原表
+DROP TABLE sales_data;
+--重命名新表
+ALTER TABLE sales_data_dedup RENAME sales_data;
 
--- 3、查看异常值：无
-SELECT COUNT(*)
-FROM customer_shopping_data 
-WHERE invoice_no regexp '~^I[0-9]{6}' 
-OR customer_id regexp '~^C[0-9]{6}'
-OR gender NOT IN ('Female','Male')
-OR age >=120
-OR quantity <0
-OR price <=0;
 
--- 4、格式转换：
--- 去掉末尾换行符
-UPDATE customer_shopping_data 
-SET invoice_date=REPLACE(invoice_date,'\r','');   
+InvoiceNo,StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country
+-- 3、处理异常值：401604条-->399656条数据
+DELETE FROM sales_data 
+WHERE InvoiceNo NOT REGEXP '^C?[0-9]{6}$'  
+OR StockCode NOT REGEXP '^[0-9]{5}[A-Z]*$'
+OR UnitPrice <=0
+OR CustomerID NOT REGEXP '^[0-9]{5}$';
 
--- 将 d/m/yyyy 转换为 yyyy-mm-dd时间格式
-UPDATE customer_shopping_data 
-SET invoice_date=STR_TO_DATE(invoice_date,'%d/%m/%Y');
+DELETE SELECT * FROM sales_data 
+WHERE (InvoiceNo REGEXP '^[0-9]{6}$' AND Quantity<=0) 
+OR (InvoiceNo REGEXP '^C[0-9]{6}$' AND Quantity>=0);
 
--- 5、时间范围筛选：
--- 原始时间范围：2021-01-01 到 2023-03-08
-SELECT MIN(invoice_date),MAX(invoice_date) 
-FROM customer_shopping_data;   
+-- 4、格式转换：将字符串格式时间%m/%d/%Y %H:%i转化为日期时间格式
+ALTER TABLE sales_data
+ADD COLUMN InvoiceDate_1 DATETIME
+AFTER InvoiceDate;
 
--- 筛选出2021-09-01到2022-08-31 的数据
-DELETE FROM customer_shopping_data
-WHERE invoice_date NOT BETWEEN '2021-09-01'  AND '2022-08-31';  
+UPDATE sales_data
+SET InvoiceDate_1=STR_TO_DATE(InvoiceDate,'%m/%d/%Y %H:%i');
+
+ALTER TABLE sales_data
+DROP COLUMN InvoiceDate;
+
+ALTER TABLE sales_data
+CHANGE InvoiceDate_1 InvoiceDate DATETIME;
+
+--时间范围：从 2010-12-01 08:26  到 2011-12-09 12:50
+
 
 
 
