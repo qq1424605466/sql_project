@@ -1,4 +1,4 @@
---  user_behavior 表
+--  user_behavior 表：76万（用于漏斗转化）
 
 -- 1、查看空值：无
 SELECT COUNT(*) 
@@ -16,7 +16,7 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11
 HAVING COUNT(*)>=2 
 ORDER BY 1,2,3,4,5;
 
--- 3、处理异常值：timestamp 列有7268个异常值为'value'
+-- 3、处理异常值：timestamp 列有 7268个 异常值为'value'
 DELETE FROM user_behavior 
 WHERE behavior NOT IN ('pv','fav','cart','buy')
 OR sex NOT IN ('0','1')
@@ -46,7 +46,7 @@ FROM user_behavior;
 
 
 --  ======================================
--- sales_data 表：54万-->40万
+-- sales_data 表：54万→40万（用于用户分层）
 
 -- 1、处理空值：数据量从541909条到406829条
 DELETE FROM sales_data 
@@ -59,7 +59,7 @@ OR UnitPrice IS NULL
 OR CustomerID IS NULL OR CustomerID = ''
 OR Country IS NULL OR Country = '';
 
--- 2、处理重复值：406829条-->401604条数据
+-- 2、处理重复值：406829条→401604条数据
 --创建去重表
 CREATE TABLE sales_data_dedup 
 AS
@@ -70,7 +70,7 @@ DROP TABLE sales_data;
 --重命名新表
 ALTER TABLE sales_data_dedup RENAME sales_data;
 
--- 3、处理异常值：401604条-->399656条数据
+-- 3、处理异常值：401604条→399656条数据
 DELETE FROM sales_data 
 WHERE InvoiceNo NOT REGEXP '^C?[0-9]{6}$'  
 OR StockCode NOT REGEXP '^[0-9]{5}[A-Z]*$'
