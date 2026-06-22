@@ -20,13 +20,15 @@
 |浏览→加购|31%|
 |加购→购买|22%|
 
-![转化漏斗图](images/funnel.png)
+![转化漏斗图](https://cdn.jsdelivr.net/gh/qq1424605466/sql_project@main/images/funnel.png)
 
 ## 二、用户价值分层分析（RFM）
 
 #### 分析思路
 R：最近消费
+
 F：消费频率
+
 M：消费金额
 
 #### 分析结果
@@ -38,9 +40,10 @@ M：消费金额
 
 注：销售额贡献和为99%，是四舍五入导致的。
 
-![用户分层饼图](images/rfm.png)
+![用户分层饼图](https://cdn.jsdelivr.net/gh/qq1424605466/sql_project@main/images/rfm.png)
 
 ## 三、综合建议
 1.针对高价值用户：加购后1小时内推送专属优惠券
+
 2.针对流失用户：送大额召回券
 
